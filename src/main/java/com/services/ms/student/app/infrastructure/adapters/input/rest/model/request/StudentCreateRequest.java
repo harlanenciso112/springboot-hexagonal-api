@@ -1,6 +1,7 @@
 package com.services.ms.student.app.infrastructure.adapters.input.rest.model.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Builder
@@ -10,12 +11,12 @@ import lombok.*;
 @NoArgsConstructor
 public class StudentCreateRequest {
 
-    @NotEmpty(message = "Field first name cannot be empty or null.")
+    @NotBlank(message = "Field first name cannot be empty or null.")
     private String firstname;
-    @NotEmpty(message = "Field lastname cannot be empty or null.")
+    @NotBlank(message = "Field lastname cannot be empty or null.")
     private String lastname;
-    @NotEmpty(message = "Field age cannot be null.")
+    @NotNull(message = "Field age cannot be null.")
     private Integer age;
-    @NotEmpty(message = "Field address cannot be empty or null.")
+    @NotBlank(message = "Field address cannot be empty or null.")
     private String address;
 }
