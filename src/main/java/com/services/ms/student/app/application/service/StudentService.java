@@ -2,14 +2,13 @@ package com.services.ms.student.app.application.service;
 
 import com.services.ms.student.app.application.ports.input.StudentServicePort;
 import com.services.ms.student.app.application.ports.output.StudentPersistencePort;
+import com.services.ms.student.app.domain.exception.BusinessException;
 import com.services.ms.student.app.domain.exception.StudentNotFoundException;
 import com.services.ms.student.app.domain.model.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +29,11 @@ public class StudentService implements StudentServicePort  {
 
     @Override
     public Student save(Student student) {
+
+        if(student.getAge() < 10){
+            throw new BusinessException("Student must be at least 10 years old.");
+        }
+
         return persistencePort.save(student);
     }
 
@@ -53,5 +57,6 @@ public class StudentService implements StudentServicePort  {
         }
         persistencePort.deleteById(id);
     }
+
 }
 

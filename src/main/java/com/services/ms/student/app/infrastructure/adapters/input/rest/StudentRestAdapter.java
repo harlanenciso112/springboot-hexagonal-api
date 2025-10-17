@@ -29,14 +29,14 @@ public class StudentRestAdapter {
         return restMapper.toStudentResponse(servicePort.findById(id));
     }
 
-    @PostMapping("/api/v1")
+    @PostMapping("/v1/api")
     public ResponseEntity<StudentResponse> save(@Valid @RequestBody StudentCreateRequest request){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(restMapper.toStudentResponse(
                         servicePort.save(restMapper.toStudent(request))));
     }
 
-    @PutMapping("/api/v1/{id}")
+    @PutMapping("/v1/api/{id}")
     public StudentResponse update(@PathVariable Long id, @Valid @RequestBody StudentCreateRequest request){
         return restMapper.toStudentResponse(servicePort.update(id,restMapper.toStudent(request)));
     }
