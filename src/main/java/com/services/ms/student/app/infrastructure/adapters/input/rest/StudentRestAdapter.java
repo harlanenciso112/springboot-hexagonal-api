@@ -6,6 +6,7 @@ import com.services.ms.student.app.infrastructure.adapters.input.rest.model.requ
 import com.services.ms.student.app.infrastructure.adapters.input.rest.model.response.StudentResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/students")
 public class StudentRestAdapter {
     private final StudentServicePort servicePort;
+
     private final StudentRestMapper restMapper;
 
     @GetMapping("/v1/api")

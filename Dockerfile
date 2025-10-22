@@ -1,10 +1,18 @@
-FROM gradle:8.14.3-jdk17 AS build
-COPY --chown=gradle:gradle . /app
-WORKDIR /app
-RUN gradle bootJar --no-daemon
+# Cambia la base a una no gestionada (amazoncorretto:17 o amazoncorretto:17-alpine para más ligereza)
+FROM amazoncorretto:17-alpine
 
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-COPY --from=build /app/build/libs/student-service-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Copia el Lambda Web Adapter (sin cambios)
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
+
+# Configura el puerto (8080 por defecto en Spring Boot)
+ENV PORT=8080
+ENV AWS_LWA_READINESS_CHECK_PATH=/students/v1/api
+
+# Establece el directorio de trabajo (compatible con Lambda)
+WORKDIR /var/task
+
+# Copia tu JAR
+COPY build/libs/student-service-0.0.1-SNAPSHOT.jar /var/task/app.jar
+
+# Comando para ejecutar la app (sin handler)
+CMD ["java", "-jar", "app.jar"]
