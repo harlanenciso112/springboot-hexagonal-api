@@ -29,11 +29,11 @@ public class StudentService implements StudentServicePort  {
 
     @Override
     public Student save(Student student) {
-
+        String name = student.getFirstname().toUpperCase();
+        System.out.println("Saving student with age: " + student.getAge());
         if(student.getAge() < 10){
             throw new BusinessException("Student must be at least 10 years old.");
         }
-
         return persistencePort.save(student);
     }
 
