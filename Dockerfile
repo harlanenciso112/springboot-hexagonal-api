@@ -1,10 +1,12 @@
-FROM gradle:8.14.3-jdk17 AS build
-COPY --chown=gradle:gradle . /app
-WORKDIR /app
-RUN gradle bootJar --no-daemon
+FROM amazoncorretto:17-alpine
 
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-COPY --from=build /app/build/libs/student-service-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
+
+ENV PORT=8080
+ENV AWS_LWA_READINESS_CHECK_PATH=/students/v1/api
+
+WORKDIR /var/task
+
+COPY build/libs/student-service-0.0.1-SNAPSHOT.jar /var/task/app.jar
+
+CMD ["java", "-jar", "app.jar"]
