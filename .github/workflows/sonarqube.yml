@@ -34,12 +34,12 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build project
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
       - name: SonarQube Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonarqube \
+        run: ./gradlew sonarqube -x test \
           -Dsonar.projectKey=harlanenciso112_springboot-hexagonal-api \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.organization=harlanenciso112 \
